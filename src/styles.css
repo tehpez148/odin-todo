@@ -1,0 +1,103 @@
+html,body{
+    height:100%
+
+}
+
+body{
+    margin:0;
+    background-color: azure;
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #f2edbd;
+}
+
+
+#topBox{
+    background-color: #6c2c25;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+#topBox > h1{
+    align-self: center;
+}
+
+#botBox{
+    background-color: #7ca2e0;;
+    
+    display: flex;
+    height: 100%;
+}
+
+#leftBox{
+    height: 100%;
+    display:flex;
+    flex-direction: column;
+    width: 25%;
+    justify-content: space-evenly;
+    border-style: double;
+    align-items: center;
+    background-color: #f2edbd;
+
+}
+
+#leftBox > button{
+    text-align: center;
+    background-color: #eb5e3a;
+    padding: 12px;
+    width: 50%;
+    color: #f2edbd;
+}
+
+#rightBox{
+    display:flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    overflow-y: auto;
+    height: 100%;
+    width: 100%;
+    
+}
+
+dialog{
+    background-color: burlywood;
+}
+
+.card {
+    
+    height: 35%;
+    width: 25%;
+   
+    padding:15px;
+    border-width: medium;
+    border: black;
+    border-radius: 20px;
+    margin: 5px;
+}
+
+.cardButtonBox{
+    display: flex;
+    justify-content: space-evenly;
+
+}
+
+.high{
+    background-color:lightcoral;
+    border-style: solid;
+    border-color: black;
+}
+
+.medium{
+    background-color: plum;
+    border-style: solid;
+    border-color: black;
+}
+
+.low{
+    background-color: lightgreen;
+    border-style: solid;
+    border-color: black;
+}
