@@ -1,10 +1,11 @@
 import "./styles.css";
 //array to hold projects 
-let projects = [{}];
+let projects = [];
 //set up ID value 
 let ID = 0;
 
-//project factory that creates projects objects, maybe 
+//project factory that creates projects objects, has a generic talk function for testing and a complete function to alter
+//the genre to completed hopefully 
 function projectFactory(title, genre, description, priority){
 
     const PID = ID + 1;
@@ -16,11 +17,12 @@ function projectFactory(title, genre, description, priority){
       description: description, 
       priority: priority, 
       PID: PID,
-      talk: function(){
-        console.log('my title is ' + title +'. My genre is '+ genre +'and my priority is '+ priority +'. PID:' +PID);
+      talk(){
+        console.log('my title is ' + title +'. My genre is '+ genre +' and my priority is '+ priority +'. PID:' +PID);
       },
-      delete: function(){
-
+      complete(){
+        this.genre = "complete";
+        console.log(projects);
       }
     };
 };
@@ -43,7 +45,8 @@ closeButton.addEventListener("click", () => {
 });
 
 //function to take in arguments from modal to create a project objects using factory function
-//perhaps need to seperate out the DOM logic?
+//pushes new project to array
+//function then resets the DOM and adds all projects in array as cards
 function createProject(){
     let title = document.getElementById("title");
     let description = document.getElementById("description");
@@ -58,11 +61,12 @@ function createProject(){
 
     let currentProject = projectFactory(titleValue,genreValue,descriptionValue,priorityValue);
 
-    createCard(currentProject);
-    currentProject.talk();
+    
   
 
     projects.push(currentProject);
+    console.log(projects);
+    populateCards();
 }
 
 const projectForm = document.getElementById("projectform");
@@ -101,13 +105,33 @@ function createCard(project){
 
   const projectComplete = document.createElement('button');
   projectComplete.textContent='Completed it mate';
+  projectComplete.classList.add('completeBut');
   cardButtonBox.appendChild(projectComplete);
+
+  projectComplete.addEventListener('click',() =>{
+    project.complete();
+    
+    populateCards();
+  })
+
 
   const projectDelete = document.createElement('button');
   projectDelete.textContent='Delete?';
   cardButtonBox.appendChild(projectDelete);
   
   projectGrid.appendChild(card); 
+};
+
+
+//Function that resets DOM of projectGrid element and adds existing projects in array to Grid
+function populateCards(){
+  projectGrid.replaceChildren();
+  projects.forEach((project) =>{
+    createCard(project);
+
+  });
+
+  console.log('This is happening lad');
 }
 
 //select buttons for different genres of projects
@@ -132,7 +156,7 @@ selectAll.addEventListener('click',() => {
   showGenre("card")
 })
 
-//still working on this, selecting genre by class hopefully 
+//shows cards based on genre, select display to none if genre/class isn't selected
 function showGenre(genre) {
   const allProjects = document.querySelectorAll(".card");
   console.log(genre);
@@ -146,3 +170,18 @@ function showGenre(genre) {
   });
 
 };
+
+/*
+
+Don't think this is working because this const is being created on pageload so has nothing to fill it
+as project cards haven't been made yet
+const complete_buts = document.querySelectorAll(".completeBut");
+
+complete_buts.forEach((button) =>{
+  button.addEventListener('click', () =>{
+    console.log('a completion has happened');
+    populateCards();
+  })
+})
+
+*/
