@@ -101,3 +101,9 @@ dialog{
     border-style: solid;
     border-color: black;
 }
+
+.done{
+    background-color: #4e9390;
+    border-style: solid;
+    border-color: black;
+}
