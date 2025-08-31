@@ -22,7 +22,13 @@ function projectFactory(title, genre, description, priority){
       },
       complete(){
         this.genre = "complete";
+        this.priority="done";
         console.log(projects);
+      },
+      delete(){
+        let projIndex = projects.findIndex(projects => projects.PID === this.PID);
+        projects.splice(projIndex,1);
+        
       }
     };
 };
@@ -71,7 +77,7 @@ function createProject(){
 
 const projectForm = document.getElementById("projectform");
 
-//also resets the form for continued usage
+//event listening on submission of modal, also resets the form for continued usage
 projectForm.addEventListener("submit", () => {
     createProject();
     projectForm.reset();
@@ -80,7 +86,7 @@ projectForm.addEventListener("submit", () => {
 
 const projectGrid = document.getElementById("rightBox");
 
-//takes a project as an argument and then creates a cards with title and description.
+//takes a project as an argument and then creates a card with title and description.
 //card takes values of genre and priority and assigns them as classes 
 function createCard(project){
   const card = document.createElement('div');
@@ -118,7 +124,15 @@ function createCard(project){
   const projectDelete = document.createElement('button');
   projectDelete.textContent='Delete?';
   cardButtonBox.appendChild(projectDelete);
+
+  projectDelete.addEventListener('click', () =>{
+    project.delete();
+
+    populateCards();
+  })
   
+
+
   projectGrid.appendChild(card); 
 };
 
@@ -130,8 +144,6 @@ function populateCards(){
     createCard(project);
 
   });
-
-  console.log('This is happening lad');
 }
 
 //select buttons for different genres of projects
