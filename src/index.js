@@ -3,12 +3,13 @@ import "./styles.css";
 //array to hold projects 
 let projects = [];
 
-//
+//select the location for all the projects to live
 const projectGrid = document.getElementById("rightBox");
 
 
 
-
+//Checks if localStorage is available, if so pulls global ID Variable and recalls any previous projects
+//if not sets up start global ID and projects variables. 
 if(storageAvailable("localStorage")) {
   console.log("storage available");
   var ID = Number(localStorage.getItem("ID"));
@@ -22,10 +23,11 @@ if(storageAvailable("localStorage")) {
 
 
 
-//project factory that creates projects objects, has a generic talk function for testing and a complete function to alter
-//the genre to completed hopefully 
+//project factory that creates projects objects, has a generic talk function for testing 
+//and a complete function to alter the genre to completed
+//delete functions removes project from projects array, and deletes from localStorage
 function projectFactory(title, genre, description, priority, TID){
-
+  //allows for the factory to work on older and new Projects 
   let PID = '';
   if (TID != 0){
      PID = TID
@@ -101,6 +103,7 @@ function createNewProject(){
     populateCards();
 }
 
+//function to re-create projects from storage, as they are stored in JSON and lose functionality 
 function createStoredProject(project){
   let titleValue = project.title;
   let descriptionValue = project.description;
@@ -122,7 +125,7 @@ function setInLocalStorage(project){
   console.log(JSON.parse(localStorage.getItem(`Project ${project.PID}`)));
 
 }
-
+//function to recall previous projects if viable, parses the stored JSONs and then create project cards etc. 
 function recallProjectsInLocalStorage(){
   let i = 0;
   while (i <= ID){
@@ -137,7 +140,7 @@ function recallProjectsInLocalStorage(){
   console.log(projects);
 };
 
-
+//selects the form inside the Modal 
 const projectForm = document.getElementById("projectform");
 
 //event listening on submission of modal, also resets the form for continued usage
@@ -164,7 +167,6 @@ function createCard(project){
 
   card.classList.add(project.genre);
 
-  
   card.classList.add(project.priority);
 
   const cardButtonBox = document.createElement('div');
