@@ -2,19 +2,21 @@ import "./styles.css";
 
 //array to hold projects 
 let projects = [];
-//set up ID value 
+
+//
+const projectGrid = document.getElementById("rightBox");
+
 
 
 
 if(storageAvailable("localStorage")) {
   console.log("storage available");
   var ID = Number(localStorage.getItem("ID"));
-  console.log(ID)
-  console.log(typeof(ID));
+  recallProjectsInLocalStorage();
 } else {
   console.log("no storage available :'(")
   projects = [];
-  var ID = 0
+  var ID = 1
 };
 
 
@@ -22,13 +24,20 @@ if(storageAvailable("localStorage")) {
 
 //project factory that creates projects objects, has a generic talk function for testing and a complete function to alter
 //the genre to completed hopefully 
-function projectFactory(title, genre, description, priority){
+function projectFactory(title, genre, description, priority, TID){
 
-    const PID = ID + 1;
-    ID++;
-    localStorage.setItem("ID", ID);
+  let PID = '';
+  if (TID != 0){
+     PID = TID
+    } else {
+     PID = ID;
+      ID++;
+      localStorage.setItem("ID", ID);
+  }
 
-    return {
+    
+
+  return {
       title: title,
       genre: genre,
       description: description, 
@@ -45,6 +54,7 @@ function projectFactory(title, genre, description, priority){
       delete(){
         let projIndex = projects.findIndex(projects => projects.PID === this.PID);
         projects.splice(projIndex,1);
+        localStorage.removeItem(`Project ${this.PID}`);
         
       }
     };
@@ -70,7 +80,7 @@ closeButton.addEventListener("click", () => {
 //function to take in arguments from modal to create a project objects using factory function
 //pushes new project to array
 //function then resets the DOM and adds all projects in array as cards
-function createProject(){
+function createNewProject(){
     let title = document.getElementById("title");
     let description = document.getElementById("description");
     let genre = document.getElementById("genre");
@@ -81,37 +91,62 @@ function createProject(){
     let descriptionValue = description.value;
     let genreValue = genre.value;
     let priorityValue = priority.value;
+    let tempIDValue = 0;
 
-    let currentProject = projectFactory(titleValue,genreValue,descriptionValue,priorityValue);
-
-    
-  
+    let currentProject = projectFactory(titleValue,genreValue,descriptionValue,priorityValue, tempIDValue);
 
     projects.push(currentProject);
     setInLocalStorage(currentProject);
 
-
     populateCards();
 }
 
+function createStoredProject(project){
+  let titleValue = project.title;
+  let descriptionValue = project.description;
+  let genreValue = project.genre;
+  let priorityValue = project.priority;
+  let tempIDValue = project.thisIDValue;
 
+  let currentProject = projectFactory(titleValue,genreValue,descriptionValue,priorityValue, tempIDValue);
+
+  projects.push(currentProject);
+
+  populateCards();
+  
+}
+
+//set's a given project in the localStorage, with the PID as it's key. 
 function setInLocalStorage(project){
   localStorage.setItem(`Project ${project.PID}`, JSON.stringify(project));
   console.log(JSON.parse(localStorage.getItem(`Project ${project.PID}`)));
 
 }
 
+function recallProjectsInLocalStorage(){
+  let i = 0;
+  while (i <= ID){
+  let testProject = JSON.parse(localStorage.getItem(`Project ${i}`));
+  if (testProject === null){
+    console.log("nothing here");
+  } else {
+    createStoredProject(testProject);
+  }
+  i++;
+}
+  console.log(projects);
+};
+
 
 const projectForm = document.getElementById("projectform");
 
 //event listening on submission of modal, also resets the form for continued usage
 projectForm.addEventListener("submit", () => {
-    createProject();
+    createNewProject();
     projectForm.reset();
 });
 
 
-const projectGrid = document.getElementById("rightBox");
 
 //takes a project as an argument and then creates a card with title and description.
 //card takes values of genre and priority and assigns them as classes 
@@ -178,6 +213,7 @@ const selectWork = document.getElementById("work");
 const selectStudy = document.getElementById("study");
 const selectMisc = document.getElementById("misc");
 const selectAll = document.getElementById("all");
+const resetAll = document.getElementById("reset");
 
 selectWork.addEventListener('click', () =>{
   showGenre(work.id);
@@ -193,6 +229,13 @@ selectMisc.addEventListener('click', () =>{
 
 selectAll.addEventListener('click',() => {
   showGenre("card")
+})
+
+//big reset button, need to add an 'are you sure' modal?
+resetAll.addEventListener('click', () => {
+  localStorage.clear();
+  projects = [];
+  projectGrid.replaceChildren();
 })
 
 //shows cards based on genre, select display to none if genre/class isn't selected
@@ -211,7 +254,7 @@ function showGenre(genre) {
 };
 
 
-
+//function to check if local storage is available 
 function storageAvailable(type) {
   let storage;
   try{
