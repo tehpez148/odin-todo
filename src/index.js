@@ -1,8 +1,24 @@
 import "./styles.css";
+
 //array to hold projects 
 let projects = [];
 //set up ID value 
-let ID = 0;
+
+
+
+if(storageAvailable("localStorage")) {
+  console.log("storage available");
+  var ID = Number(localStorage.getItem("ID"));
+  console.log(ID)
+  console.log(typeof(ID));
+} else {
+  console.log("no storage available :'(")
+  projects = [];
+  var ID = 0
+};
+
+
+
 
 //project factory that creates projects objects, has a generic talk function for testing and a complete function to alter
 //the genre to completed hopefully 
@@ -10,6 +26,7 @@ function projectFactory(title, genre, description, priority){
 
     const PID = ID + 1;
     ID++;
+    localStorage.setItem("ID", ID);
 
     return {
       title: title,
@@ -71,9 +88,19 @@ function createProject(){
   
 
     projects.push(currentProject);
-    console.log(projects);
+    setInLocalStorage(currentProject);
+
+
     populateCards();
 }
+
+
+function setInLocalStorage(project){
+  localStorage.setItem(`Project ${project.PID}`, JSON.stringify(project));
+  console.log(JSON.parse(localStorage.getItem(`Project ${project.PID}`)));
+
+}
+
 
 const projectForm = document.getElementById("projectform");
 
@@ -183,17 +210,22 @@ function showGenre(genre) {
 
 };
 
-/*
 
-Don't think this is working because this const is being created on pageload so has nothing to fill it
-as project cards haven't been made yet
-const complete_buts = document.querySelectorAll(".completeBut");
 
-complete_buts.forEach((button) =>{
-  button.addEventListener('click', () =>{
-    console.log('a completion has happened');
-    populateCards();
-  })
-})
-
-*/
+function storageAvailable(type) {
+  let storage;
+  try{
+    storage=window[type];
+    const x = "__storage_test__";
+    storage.setItem(x,x);
+    storage.removeItem(x);
+    return true;
+  } catch (e) {
+    return(
+      e instanceof DOMException && 
+      e.name == "QuotaExceededError" &&
+      storage &&
+      storage.length!== 0
+    );
+  }
+}
