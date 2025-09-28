@@ -235,9 +235,14 @@ selectAll.addEventListener('click',() => {
 
 //big reset button, need to add an 'are you sure' modal?
 resetAll.addEventListener('click', () => {
+  let warning = "Are you sure?\nThis will reset everything?";
+  if(confirm(warning) == true){
   localStorage.clear();
   projects = [];
-  projectGrid.replaceChildren();
+  projectGrid.replaceChildren();}
+  else{
+    alert("Phew!");
+  }
 })
 
 //shows cards based on genre, select display to none if genre/class isn't selected
