@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="index.js" defer></script>
+    <title>To do!</title>
+<script defer src="main.js"></script></head>
+<body>
+    <div id="topBox">
+        <h1>Do, or do not, there is no try</h1>
+    </div>
+    <div id ="botBox">
+        <div id="leftBox">
+            <button type ="button" id="showButton">Create Project</button>
+            <button id="work">Work</button>
+            <button id="study">Study</button>
+            <button id="misc">Misc</button>
+            <button id="all">Show All</button>
+            <button id="reset">BIG RESET?</button>
+        </div>
+        <dialog>
+            <form method="dialog" id = "projectform">
+                <div id="form-inputs">
+                    <h1>
+                        <label for ="title"> Title: </label>
+                        <input type="text" id="title" name="title" required autofocus/>
+                    </h1>
+                    <p>
+                        <label for="description">Description: </label>
+                        <input type="text" id="description" name="description" />
+                    </p>
+                    <p>
+                        <label for="priority"> Priority: 
+                            <select id="priority">
+                                <option value="default">Choose...</option>
+                                <option value="high">High</option>
+                                <option value="medium">Medium</option>
+                                <option value="low">Who cares</option>
+                            </select>
+
+                        </label>
+                    </p>
+                    <p>
+                        <label for ="genre"> Genre:
+                            <select id = "genre">
+                                <option value="default">Choose...</option>
+                                <option value="work">Work</option>
+                                <option value="study">Study</option>
+                                <option value="misc">Misc</option>
+                            </select>
+                        </label>
+                        
+                    </p>
+                </div>
+                <div id="form-buttons"> 
+                    <input type="submit" id="form-submit" value="Submit Project" />
+                    <input type="reset" id="form-reset" value="Reset">
+                    <button id="form-cancel">Cancel</button>
+                </div>
+        </dialog>
+        <div id ="rightBox">
+            
+             
+            
+            
+        </div>
+    </div>
+    
+
+</body>
+</html>
